@@ -39,7 +39,8 @@ export default function StoreManageProducts() {
                         <th className="px-4 py-3 hidden md:table-cell">Description</th>
                         <th className="px-4 py-3 hidden md:table-cell">MRP</th>
                         <th className="px-4 py-3">Price</th>
-                        <th className="px-4 py-3">Actions</th>
+                        <th className="px-4 py-3 text-center">Stock</th>
+                        <th className="px-4 py-3 text-center">Active</th>
                     </tr>
                 </thead>
                 <tbody className="text-slate-700">
@@ -55,10 +56,19 @@ export default function StoreManageProducts() {
                             <td className="px-4 py-3 hidden md:table-cell">{currency} {product.mrp.toLocaleString()}</td>
                             <td className="px-4 py-3">{currency} {product.price.toLocaleString()}</td>
                             <td className="px-4 py-3 text-center">
-                                <label className="relative inline-flex items-center cursor-pointer text-gray-900 gap-3">
-                                    <input type="checkbox" className="sr-only peer" onChange={() => toast.promise(toggleStock(product.id), { loading: "Updating data..." })} checked={product.inStock} />
-                                    <div className="w-9 h-5 bg-slate-300 rounded-full peer peer-checked:bg-green-600 transition-colors duration-200"></div>
-                                    <span className="dot absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-4"></span>
+                                <input 
+                                    type="number" 
+                                    className="w-16 p-1 border border-slate-200 rounded text-center outline-none focus:border-teal-500 shadow-sm" 
+                                    defaultValue={product.stock || 10} 
+                                    onChange={(e) => toast.promise(toggleStock(product.id), { loading: "Updating stock..." })}
+                                    min="0"
+                                />
+                            </td>
+                            <td className="px-4 py-3 text-center">
+                                <label className="relative inline-flex items-center cursor-pointer text-gray-900 gap-3 justify-center">
+                                    <input type="checkbox" className="sr-only peer" onChange={() => toast.promise(toggleStock(product.id), { loading: "Updating status..." })} checked={product.inStock} />
+                                    <div className="w-9 h-5 bg-slate-300 rounded-full peer peer-checked:bg-teal-600 transition-colors duration-200"></div>
+                                    <span className="dot absolute left-[calc(50%-18px)] top-1 w-3 h-3 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-4"></span>
                                 </label>
                             </td>
                         </tr>

@@ -14,6 +14,7 @@ export default function StoreAddProduct() {
         description: "",
         mrp: 0,
         price: 0,
+        stock: 0,
         category: "",
     })
     const [loading, setLoading] = useState(false)
@@ -54,14 +55,18 @@ export default function StoreAddProduct() {
                 <textarea name="description" onChange={onChangeHandler} value={productInfo.description} placeholder="Enter product description" rows={5} className="w-full max-w-sm p-2 px-4 outline-none border border-slate-200 rounded resize-none" required />
             </label>
 
-            <div className="flex gap-5">
+            <div className="flex gap-5 flex-wrap">
                 <label htmlFor="" className="flex flex-col gap-2 ">
                     Actual Price ($)
-                    <input type="number" name="mrp" onChange={onChangeHandler} value={productInfo.mrp} placeholder="0" rows={5} className="w-full max-w-45 p-2 px-4 outline-none border border-slate-200 rounded resize-none" required />
+                    <input type="number" name="mrp" onChange={onChangeHandler} value={productInfo.mrp} placeholder="0" className="w-full max-w-45 p-2 px-4 outline-none border border-slate-200 rounded" required />
                 </label>
                 <label htmlFor="" className="flex flex-col gap-2 ">
                     Offer Price ($)
-                    <input type="number" name="price" onChange={onChangeHandler} value={productInfo.price} placeholder="0" rows={5} className="w-full max-w-45 p-2 px-4 outline-none border border-slate-200 rounded resize-none" required />
+                    <input type="number" name="price" onChange={onChangeHandler} value={productInfo.price} placeholder="0" className="w-full max-w-45 p-2 px-4 outline-none border border-slate-200 rounded" required />
+                </label>
+                <label htmlFor="" className="flex flex-col gap-2 ">
+                    Stock Quantity
+                    <input type="number" name="stock" onChange={onChangeHandler} value={productInfo.stock} placeholder="0" className="w-full max-w-45 p-2 px-4 outline-none border border-slate-200 rounded" required />
                 </label>
             </div>
 
