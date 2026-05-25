@@ -13,7 +13,8 @@ const OrderSummary = ({ totalPrice, items }) => {
 
     const addressList = useSelector(state => state.address.list);
 
-    const [paymentMethod, setPaymentMethod] = useState('COD');
+    const [paymentMethod, setPaymentMethod] = useState('Cash ZWG');
+    const [deliveryMethod, setDeliveryMethod] = useState('Biker');
     const [selectedAddress, setSelectedAddress] = useState(null);
     const [showAddressModal, setShowAddressModal] = useState(false);
     const [couponCodeInput, setCouponCodeInput] = useState('');
@@ -31,16 +32,36 @@ const OrderSummary = ({ totalPrice, items }) => {
     }
 
     return (
-        <div className='w-full max-w-lg lg:max-w-[340px] bg-slate-50/30 border border-slate-200 text-slate-500 text-sm rounded-xl p-7'>
-            <h2 className='text-xl font-medium text-slate-600'>Payment Summary</h2>
-            <p className='text-slate-400 text-xs my-4'>Payment Method</p>
+        <div className='w-full max-w-lg lg:max-w-[340px] bg-white border border-slate-100 shadow-2xl shadow-slate-200/40 text-slate-600 text-sm rounded-3xl p-7 relative overflow-hidden'>
+            <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-teal-400 via-teal-500 to-emerald-400"></div>
+            <h2 className='text-2xl font-bold text-slate-800 tracking-tight'>Payment Summary</h2>
+            
+            <p className='text-slate-400 text-xs mt-6 mb-2 font-semibold uppercase tracking-wider'>Payment Method</p>
             <div className='flex gap-2 items-center'>
-                <input type="radio" id="COD" onChange={() => setPaymentMethod('COD')} checked={paymentMethod === 'COD'} className='accent-gray-500' />
-                <label htmlFor="COD" className='cursor-pointer'>COD</label>
+                <select 
+                    className='border border-slate-200 bg-slate-50/50 p-2.5 w-full outline-none rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:bg-white transition-all text-slate-700 font-medium cursor-pointer' 
+                    value={paymentMethod} 
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                >
+                    <option value="Cash ZWG">Cash ZWG</option>
+                    <option value="Cash USD">Cash USD</option>
+                    <option value="Ecocash USD">Ecocash USD</option>
+                    <option value="Ecocash ZWG">Ecocash ZWG</option>
+                    <option value="Inbucks">Inbucks</option>
+                </select>
             </div>
-            <div className='flex gap-2 items-center mt-1'>
-                <input type="radio" id="STRIPE" name='payment' onChange={() => setPaymentMethod('STRIPE')} checked={paymentMethod === 'STRIPE'} className='accent-gray-500' />
-                <label htmlFor="STRIPE" className='cursor-pointer'>Stripe Payment</label>
+            <p className='text-slate-400 text-xs mt-5 mb-2 font-semibold uppercase tracking-wider'>Delivery Method</p>
+            <div className='flex gap-2 items-center'>
+                <select 
+                    className='border border-slate-200 bg-slate-50/50 p-2.5 w-full outline-none rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:bg-white transition-all text-slate-700 font-medium cursor-pointer' 
+                    value={deliveryMethod} 
+                    onChange={(e) => setDeliveryMethod(e.target.value)}
+                >
+                    <option value="Biker">Biker</option>
+                    <option value="InDrive">InDrive</option>
+                    <option value="Rider">Rider</option>
+                    <option value="Taxi">Taxi</option>
+                </select>
             </div>
             <div className='my-4 py-4 border-y border-slate-200 text-slate-400'>
                 <p>Address</p>
@@ -73,7 +94,7 @@ const OrderSummary = ({ totalPrice, items }) => {
                 <div className='flex justify-between'>
                     <div className='flex flex-col gap-1 text-slate-400'>
                         <p>Subtotal:</p>
-                        <p>Shipping:</p>
+                        <p>Delivery:</p>
                         {coupon && <p>Coupon:</p>}
                     </div>
                     <div className='flex flex-col gap-1 font-medium text-right'>
@@ -97,11 +118,16 @@ const OrderSummary = ({ totalPrice, items }) => {
                     )
                 }
             </div>
-            <div className='flex justify-between py-4'>
-                <p>Total:</p>
-                <p className='font-medium text-right'>{currency}{coupon ? (totalPrice - (coupon.discount / 100 * totalPrice)).toFixed(2) : totalPrice.toLocaleString()}</p>
+            <div className='flex justify-between py-5 text-lg'>
+                <p className='font-medium text-slate-600'>Total:</p>
+                <p className='font-bold text-teal-600 text-right'>{currency}{coupon ? (totalPrice - (coupon.discount / 100 * totalPrice)).toFixed(2) : totalPrice.toLocaleString()}</p>
             </div>
-            <button onClick={e => toast.promise(handlePlaceOrder(e), { loading: 'placing Order...' })} className='w-full bg-slate-700 text-white py-2.5 rounded hover:bg-slate-900 active:scale-95 transition-all'>Place Order</button>
+            <button 
+                onClick={e => toast.promise(handlePlaceOrder(e), { loading: 'placing Order...' })} 
+                className='w-full bg-gradient-to-r from-teal-500 to-emerald-500 text-white py-3.5 rounded-xl font-bold tracking-wide shadow-lg shadow-teal-500/30 hover:shadow-xl hover:-translate-y-0.5 active:scale-95 active:shadow-md transition-all'
+            >
+                Place Order
+            </button>
 
             {showAddressModal && <AddressModal setShowAddressModal={setShowAddressModal} />}
 
